@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#10111b">
+  <title>ClipPrompt — Créateur de prompts IA</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 24px 16px; min-height: 100vh;
+      background: #10111b; color: #f6f5ff;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    main { max-width: 700px; margin: 35px auto; }
+    .logo { color: #a99bff; font-size: 30px; font-weight: 800; }
+    .tag { color: #bcb9ce; line-height: 1.6; }
+    .panel {
+      margin-top: 25px; padding: 22px;
+      border: 1px solid #343449; border-radius: 18px;
+      background: #191a29;
+    }
+    label { display: block; margin: 18px 0 8px; font-weight: 600; }
+    select, textarea, input {
+      width: 100%; padding: 13px; border-radius: 10px;
+      border: 1px solid #45455e; background: #10111b;
+      color: white; font: inherit;
+    }
+    textarea { min-height: 100px; resize: vertical; }
+    button {
+      padding: 13px 17px; margin-top: 16px; border: 0;
+      border-radius: 10px; background: #a99bff;
+      color: #171326; font-size: 15px; font-weight: 700;
+      cursor: pointer;
+    }
+    .result { white-space: pre-wrap; line-height: 1.6; overflow-wrap: anywhere; }
+    .muted { color: #bcb9ce; font-size: 13px; }
+  </style>
+</head>
+<body>
+<main>
+  <div class="logo">✦ ClipPrompt</div>
+  <p class="tag">Transforme tes idées en prompts créatifs pour l’IA, gratuitement.</p>
+  <section class="panel">
+    <h2>Crée ton prompt</h2>
+    <label for="type">Quel contenu veux-tu créer ?</label>
+    <select id="type">
+      <option>Vidéo courte TikTok ou Reels</option>
+      <option>Vidéo YouTube</option>
+      <option>Image réaliste</option>
+      <option>Animation 3D</option>
+      <option>Publicité produit</option>
+      <option>Histoire pour enfants</option>
+    </select>
+    <label for="idea">Ton idée</label>
+    <textarea id="idea" placeholder="Ex. : cinq enfants découvrent une forêt magique..."></textarea>
+    <label for="style">Style souhaité</label>
+    <select id="style">
+      <option>Cinématographique et réaliste</option>
+      <option>Animation 3D colorée</option>
+      <option>Minimaliste et élégant</option>
+      <option>Drôle et dynamique</option>
+      <option>Documentaire professionnel</option>
+    </select>
+    <button onclick="createPrompt()">Générer mon prompt</button>
+    <div id="output" class="result" aria-live="polite"></div>
+    <button id="copy" hidden onclick="copyPrompt()">Copier le prompt</button>
+    <p class="muted">Outil gratuit · Aucun compte nécessaire</p>
+  </section>
+</main>
+<script>
+function createPrompt() {
+  const idea = document.getElementById('idea').value.trim();
+  if (!idea) {
+    document.getElementById('output').textContent =
+      'Écris d’abord ton idée dans la zone prévue.';
+    document.getElementById('copy').hidden = true;
+    return;
+  }
+  const type = document.getElementById('type').value;
+  const style = document.getElementById('style').value;
+  const prompt = 'Crée : ' + type + '.\n' +
+    'Idée : ' + idea + '\n' +
+    'Style : ' + style + '.\n' +
+    'Consignes : propose une composition soignée, des détails précis, ' +
+    'une ambiance cohérente et un résultat de haute qualité adapté au format choisi.';
+  document.getElementById('output').textContent = prompt;
+  document.getElementById('copy').hidden = false;
+}
+function copyPrompt() {
+  const text = document.getElementById('output').textContent;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      document.getElementById('copy').textContent = 'Copié !';
+    }).catch(() => window.prompt('Copie ton prompt :', text));
+  } else {
+    window.prompt('Copie ton prompt :', text);
+  }
+}
+</script>
+</body>
+</html>
