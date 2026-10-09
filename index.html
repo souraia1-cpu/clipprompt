@@ -2,102 +2,201 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#10111b">
-  <title>ClipPrompt — Créateur de prompts IA</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0; padding: 24px 16px; min-height: 100vh;
-      background: #10111b; color: #f6f5ff;
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    }
-    main { max-width: 700px; margin: 35px auto; }
-    .logo { color: #a99bff; font-size: 30px; font-weight: 800; }
-    .tag { color: #bcb9ce; line-height: 1.6; }
-    .panel {
-      margin-top: 25px; padding: 22px;
-      border: 1px solid #343449; border-radius: 18px;
-      background: #191a29;
-    }
-    label { display: block; margin: 18px 0 8px; font-weight: 600; }
-    select, textarea, input {
-      width: 100%; padding: 13px; border-radius: 10px;
-      border: 1px solid #45455e; background: #10111b;
-      color: white; font: inherit;
-    }
-    textarea { min-height: 100px; resize: vertical; }
-    button {
-      padding: 13px 17px; margin-top: 16px; border: 0;
-      border-radius: 10px; background: #a99bff;
-      color: #171326; font-size: 15px; font-weight: 700;
-      cursor: pointer;
-    }
-    .result { white-space: pre-wrap; line-height: 1.6; overflow-wrap: anywhere; }
-    .muted { color: #bcb9ce; font-size: 13px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#10111b">
+<meta name="description" content="Crée gratuitement des prompts créatifs pour tes vidéos, images et histoires avec ClipPrompt.">
+<title>ClipPrompt — Créateur de prompts IA</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:24px 16px;min-height:100vh;background:#10111b;color:#f6f5ff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.6}
+main{max-width:720px;margin:25px auto}
+.logo{font-size:clamp(32px,7vw,48px);font-weight:800;color:#a99bff;margin-bottom:4px}
+.intro{color:#bcb9ce;font-size:18px;margin:0 0 28px}
+.panel{border:1px solid #343449;border-radius:26px;background:#191a29;padding:24px}
+h2{font-size:27px;margin:0 0 20px}
+label{display:block;font-weight:650;margin:18px 0 8px}
+input,select,textarea{width:100%;padding:14px;background:#10111b;border:1px solid #484760;border-radius:14px;color:#f6f5ff;font:inherit}
+textarea{min-height:120px;resize:vertical}
+button{border:0;border-radius:14px;padding:14px 20px;font:inherit;font-weight:750;cursor:pointer}
+.primary{background:#a99bff;color:#171426;margin-top:20px}
+.secondary{background:#29283d;color:#f6f5ff;border:1px solid #484760}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #a99bff;outline-offset:3px}
+.result{margin-top:24px;padding:18px;border:1px solid #484760;border-radius:16px;background:#10111b;white-space:pre-wrap;overflow-wrap:anywhere}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.hint,footer{color:#bcb9ce;font-size:14px}
+footer{text-align:center;margin-top:22px}
+.hidden{display:none}
+</style>
 </head>
 <body>
 <main>
   <div class="logo">✦ ClipPrompt</div>
-  <p class="tag">Transforme tes idées en prompts créatifs pour l’IA, gratuitement.</p>
+  <p class="intro">Transforme tes idées en prompts créatifs pour l’IA, gratuitement.</p>
+
   <section class="panel">
     <h2>Crée ton prompt</h2>
+
     <label for="type">Quel contenu veux-tu créer ?</label>
     <select id="type">
-      <option>Vidéo courte TikTok ou Reels</option>
-      <option>Vidéo YouTube</option>
-      <option>Image réaliste</option>
-      <option>Animation 3D</option>
-      <option>Publicité produit</option>
-      <option>Histoire pour enfants</option>
+      <option value="video">Vidéo courte TikTok ou Reels</option>
+      <option value="image">Image générée par IA</option>
+      <option value="story">Histoire ou animation</option>
+      <option value="ad">Publicité pour un produit</option>
+      <option value="youtube">Vidéo YouTube</option>
     </select>
+
     <label for="idea">Ton idée</label>
-    <textarea id="idea" placeholder="Ex. : cinq enfants découvrent une forêt magique..."></textarea>
+    <textarea id="idea" placeholder="Ex. : cinq enfants découvrent une forêt magique..." maxlength="1500"></textarea>
+
     <label for="style">Style souhaité</label>
     <select id="style">
-      <option>Cinématographique et réaliste</option>
-      <option>Animation 3D colorée</option>
-      <option>Minimaliste et élégant</option>
-      <option>Drôle et dynamique</option>
-      <option>Documentaire professionnel</option>
+      <option value="cinematic">Cinématographique et réaliste</option>
+      <option value="3d">Animation 3D colorée</option>
+      <option value="cartoon">Dessin animé</option>
+      <option value="anime">Style anime</option>
+      <option value="documentary">Documentaire naturel</option>
+      <option value="dreamy">Féérique et onirique</option>
+      <option value="minimal">Minimaliste et élégant</option>
     </select>
-    <button onclick="createPrompt()">Générer mon prompt</button>
-    <div id="output" class="result" aria-live="polite"></div>
-    <button id="copy" hidden onclick="copyPrompt()">Copier le prompt</button>
-    <p class="muted">Outil gratuit · Aucun compte nécessaire</p>
+
+    <label for="format">Format souhaité</label>
+    <select id="format">
+      <option value="vertical">Vertical 9:16 — TikTok, Reels, Shorts</option>
+      <option value="horizontal">Horizontal 16:9 — YouTube</option>
+      <option value="square">Carré 1:1 — publications</option>
+    </select>
+
+    <button class="primary" id="generate" type="button">✨ Générer mon prompt</button>
+
+    <div id="output" class="hidden" aria-live="polite">
+      <label for="result">Ton prompt amélioré</label>
+      <div id="result" class="result"></div>
+      <div class="actions">
+        <button class="primary" id="copy" type="button">📋 Copier le prompt</button>
+        <button class="secondary" id="again" type="button">↻ Modifier mon idée</button>
+      </div>
+      <p id="status" class="hint"></p>
+    </div>
+    <p class="hint">Outil gratuit · Sans compte · Ton idée reste dans ton navigateur.</p>
   </section>
+
+  <footer>ClipPrompt · Donne vie à tes idées ✨</footer>
 </main>
+
 <script>
-function createPrompt() {
-  const idea = document.getElementById('idea').value.trim();
+const $ = id => document.getElementById(id);
+
+const styles = {
+  cinematic: "un style cinématographique et réaliste, une lumière travaillée, des textures détaillées et une composition digne d'un film",
+  "3d": "une animation 3D soignée, des personnages expressifs, des couleurs harmonieuses et des matières détaillées",
+  cartoon: "un dessin animé vivant, des formes expressives, des couleurs attrayantes et une animation fluide",
+  anime: "une esthétique anime, des expressions marquées, des décors détaillés et une lumière évocatrice",
+  documentary: "un rendu documentaire naturel, des détails crédibles, une lumière authentique et une ambiance immersive",
+  dreamy: "une atmosphère féérique et onirique, une lumière douce, des particules lumineuses et des couleurs magiques",
+  minimal: "une esthétique minimaliste et élégante, une composition épurée, une lumière douce et des détails raffinés"
+};
+
+const formats = {
+  vertical: "vertical 9:16, adapté à TikTok, Instagram Reels et YouTube Shorts",
+  horizontal: "horizontal 16:9, adapté à YouTube et aux écrans larges",
+  square: "carré 1:1, adapté aux publications sur les réseaux sociaux"
+};
+
+const types = {
+  video: {
+    name: "Vidéo courte pour les réseaux sociaux",
+    details: "Construis une séquence avec une accroche visuelle dès le début, une progression claire, des actions faciles à comprendre et une conclusion mémorable. Décris les mouvements des personnages, les mouvements de caméra, la lumière, le décor et le rythme du montage."
+  },
+  image: {
+    name: "Image générée par IA",
+    details: "Décris précisément le sujet principal, son apparence, sa pose, l'arrière-plan, la composition, le cadrage, la profondeur de champ, l'éclairage, les textures et la palette de couleurs. L'image doit être lisible et visuellement cohérente."
+  },
+  story: {
+    name: "Histoire ou animation",
+    details: "Construis une histoire avec une introduction, un événement déclencheur, une aventure progressive et une fin satisfaisante. Décris les personnages, leurs émotions, les lieux, les actions et les transitions entre les scènes. Garde les personnages visuellement cohérents."
+  },
+  ad: {
+    name: "Publicité pour un produit",
+    details: "Présente clairement le produit, attire l'attention dès le début, mets en valeur ses caractéristiques fournies sans inventer de promesses, montre son utilisation et termine par un appel à l'action naturel."
+  },
+  youtube: {
+    name: "Vidéo YouTube",
+    details: "Structure la vidéo avec une introduction captivante, des séquences organisées, des transitions fluides et une conclusion claire. Décris les plans, le rythme, les éléments visuels et les moments qui retiennent l'attention."
+  }
+};
+
+let currentPrompt = "";
+
+$("generate").addEventListener("click", () => {
+  const idea = $("idea").value.trim();
+
   if (!idea) {
-    document.getElementById('output').textContent =
-      'Écris d’abord ton idée dans la zone prévue.';
-    document.getElementById('copy').hidden = true;
+    $("idea").focus();
+    $("status").textContent = "";
+    alert("Écris ton idée avant de générer ton prompt.");
     return;
   }
-  const type = document.getElementById('type').value;
-  const style = document.getElementById('style').value;
-  const prompt = 'Crée : ' + type + '.\n' +
-    'Idée : ' + idea + '\n' +
-    'Style : ' + style + '.\n' +
-    'Consignes : propose une composition soignée, des détails précis, ' +
-    'une ambiance cohérente et un résultat de haute qualité adapté au format choisi.';
-  document.getElementById('output').textContent = prompt;
-  document.getElementById('copy').hidden = false;
-}
-function copyPrompt() {
-  const text = document.getElementById('output').textContent;
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(() => {
-      document.getElementById('copy').textContent = 'Copié !';
-    }).catch(() => window.prompt('Copie ton prompt :', text));
-  } else {
-    window.prompt('Copie ton prompt :', text);
+
+  const type = types[$("type").value];
+  const style = styles[$("style").value];
+  const format = formats[$("format").value];
+
+  currentPrompt =
+`OBJECTIF
+Créer : ${type.name}.
+
+IDÉE PRINCIPALE
+${idea}
+
+DIRECTION ARTISTIQUE
+${style}.
+
+FORMAT
+${format}.
+
+CONSIGNES DE CRÉATION
+${type.details}
+
+QUALITÉ ET COHÉRENCE
+Soigne la composition, la lisibilité, les détails et la cohérence visuelle. Maintiens la continuité des personnages, des vêtements, des couleurs et des décors lorsque plusieurs scènes sont présentes. Évite les éléments déformés, les détails incohérents, les textes illisibles et les changements visuels involontaires.
+
+RÉSULTAT ATTENDU
+Produis un résultat abouti, expressif, cohérent avec l'idée de départ et adapté au format choisi.`;
+
+  $("result").textContent = currentPrompt;
+  $("output").classList.remove("hidden");
+  $("status").textContent = "Ton prompt est prêt !";
+  $("copy").textContent = "📋 Copier le prompt";
+  $("output").scrollIntoView({behavior:"smooth",block:"nearest"});
+});
+
+$("copy").addEventListener("click", async () => {
+  if (!currentPrompt) return;
+  try {
+    await navigator.clipboard.writeText(currentPrompt);
+    $("copy").textContent = "✅ Copié !";
+    $("status").textContent = "Prompt copié. Tu peux le coller dans ton outil d'IA.";
+  } catch (error) {
+    const area = document.createElement("textarea");
+    area.value = currentPrompt;
+    area.style.position = "fixed";
+    area.style.opacity = "0";
+    document.body.appendChild(area);
+    area.select();
+    const copied = document.execCommand("copy");
+    area.remove();
+    $("copy").textContent = copied ? "✅ Copié !" : "Sélectionne le texte pour le copier";
+    $("status").textContent = copied
+      ? "Prompt copié. Tu peux le coller dans ton outil d'IA."
+      : "Appuie longuement sur le texte du prompt pour le sélectionner et le copier.";
   }
-}
+});
+
+$("again").addEventListener("click", () => {
+  $("idea").focus();
+  $("idea").scrollIntoView({behavior:"smooth",block:"center"});
+});
 </script>
 </body>
 </html>
