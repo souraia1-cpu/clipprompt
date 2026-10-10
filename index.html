@@ -68,6 +68,7 @@ footer{text-align:center;margin-top:22px}
     </select>
 
     <button class="primary" id="generate" type="button">✨ Générer mon prompt</button>
+    <button class="secondary" id="ideaButton" type="button">🎲 Donne-moi une idée</button>
 
     <div id="output" class="hidden" aria-live="polite">
       <label for="result">Ton prompt amélioré</label>
@@ -196,6 +197,21 @@ $("copy").addEventListener("click", async () => {
 $("again").addEventListener("click", () => {
   $("idea").focus();
   $("idea").scrollIntoView({behavior:"smooth",block:"center"});
+});
+const ideas = [
+  "Une vidéo satisfaisante de rangement d’une petite chambre",
+  "Cinq enfants découvrent une forêt magique",
+  "Une routine du matin esthétique et apaisante",
+  "Une mini-histoire avec un retournement inattendu",
+  "Une publicité créative pour un produit du quotidien",
+  "Une chambre ordinaire transformée en espace de rêve",
+  "Un personnage découvre un pouvoir mystérieux",
+  "Une vidéo de cuisine rapide et appétissante"
+];
+
+document.getElementById("ideaButton").addEventListener("click", () => {
+  const idea = ideas[Math.floor(Math.random() * ideas.length)];
+  document.getElementById("idea").value = idea;
 });
 </script>
 </body>
